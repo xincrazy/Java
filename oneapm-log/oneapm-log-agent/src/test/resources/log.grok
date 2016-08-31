@@ -1,0 +1,106 @@
+# common
+ANY (?:[\s\S]*)
+
+# basic
+LOGLEVEL ([A|a]lert|ALERT|[T|t]race|TRACE|[D|d]ebug|DEBUG|[N|n]otice|NOTICE|[I|i]nfo|INFO|[W|w]arn?(?:ing)?|WARN?(?:ING)?|[E|e]rr?(?:or)?|ERR?(?:OR)?|[C|c]rit?(?:ical)?|CRIT?(?:ICAL)?|[F|f]atal|FATAL|[S|s]evere|SEVERE|EMERG(?:ENCY)?|[Ee]merg(?:ency)?)
+YEAR (?>\d\d){1,2}
+MONTH \b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b
+MONTHNUM (?:0?[1-9]|1[0-2])
+DAY (?:Mon(?:day)?|Tue(?:sday)?|Wed(?:nesday)?|Thu(?:rsday)?|Fri(?:day)?|Sat(?:urday)?|Sun(?:day)?)
+DAYNUM (?:0?[1-9]|[1-2][0-9]|3[0-1])
+HOUR (?:2[0123]|[01]?[0-9])
+MINUTE (?:[0-5]?[0-9])
+SECOND (?:[0-5]?[0-9])
+MILLSECOND (?:[0-9]{1,3})
+ISO8601_TIMEZONE (?:Z|[+-]%{HOUR}(?::?%{MINUTE}))
+UNCATCH_ISO8601_TIMEZONE (?:Z|[+-](?:2[0123]|[01]?[0-9])(?::?(?:[0-5]?[0-9])))
+ISO8601_TIMESTAMP (?:%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day}T%{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second}\.%{MILLSECOND:mills}%{UNCATCH_ISO8601_TIMEZONE:timezone})
+HTTPTYPE (?:POST|post|GET|get|DELETE|delete|PUT|put)
+HTTPVERSION (?:HTTP/\d*?\.\d*?)
+HTTPCODE (?:\d{3})
+HTTPBYTES (?:\d+)
+HTTPTIMETAKEN (?:\d+)
+
+# Networking
+MAC (?:%{CISCOMAC:UNWANTED}|%{WINDOWSMAC:UNWANTED}|%{COMMONMAC:UNWANTED})
+CISCOMAC (?:(?:[A-Fa-f0-9]{4}\.){2}[A-Fa-f0-9]{4})
+WINDOWSMAC (?:(?:[A-Fa-f0-9]{2}-){5}[A-Fa-f0-9]{2})
+COMMONMAC (?:(?:[A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2})
+IPV6 ((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?
+IPV4 (?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[.](?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[.](?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[.](?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9])
+IP (?:%{IPV6:UNWANTED}|%{IPV4:UNWANTED})
+HOSTNAME \b(?:[0-9A-Za-z][0-9A-Za-z-]{0,62})(?:\.(?:[0-9A-Za-z][0-9A-Za-z-]{0,62}))*(\.?|\b)
+HOST %{HOSTNAME:UNWANTED}
+IPORHOST (?:%{HOSTNAME:UNWANTED}|%{IP:UNWANTED})
+HOSTPORT (?:%{IPORHOST}:%{POSINT:PORT})
+
+# paths
+PATH (?:%{UNIXPATH}|%{WINPATH})
+UNIXPATH (?>/(?>[\w_%!$@:.,~-]+|\\.)*)+
+#UNIXPATH (?<![\w\/])(?:/[^\/\s?*]*)+
+TTY (?:/dev/(pts|tty([pq])?)(\w+)?/?(?:[0-9]+))
+WINPATH (?>[A-Za-z]+:|\\)(?:\\[^\\?*]*)+
+URIPROTO [A-Za-z]+(\+[A-Za-z+]+)?
+URIHOST %{IPORHOST}(?::%{POSINT:port})?
+# uripath comes loosely from RFC1738, but mostly from what Firefox
+# doesn't turn into %XX
+URIPATH (?:/[A-Za-z0-9$.+!*'(){},~:;=@#%_\-]*)+
+#URIPARAM \?(?:[A-Za-z0-9]+(?:=(?:[^&]*))?(?:&(?:[A-Za-z0-9]+(?:=(?:[^&]*))?)?)*)?
+URIPARAM \?[A-Za-z0-9$.+!*'|(){},~@#%&/=:;_?\-\[\]]*
+URIPATHPARAM %{URIPATH}(?:%{URIPARAM})?
+URI %{URIPROTO}://(?:%{USER}(?::[^@]*)?@)?(?:%{URIHOST})?(?:%{URIPATHPARAM})?
+
+# gc
+GC_NUMBER (?:\d+(?:\.\d+)?)
+GC_TYPE (?:[a-zA-Z\s]+?)
+GC_ERGONOMICS (?:[\s\S]+?)
+GC_GEN (?:[a-zA-Z]+?)
+GC_SIZE_UNIT (?:k|K|m|M|g|G)?
+GC_SIZE (?:\d+?)
+GC_KEY (?:[a-zA-Z]+?)
+
+# cassandra log
+CASSANDRATHREADNAME (?:[a-zA-Z0-9._\-:]+)
+CASSANDRALOG %{LOGLEVEL:loglevel}\s+?\[%{CASSANDRATHREADNAME:threadname}\]\s+?(?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day} %{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second},%{MILLSECOND:mills})\s+?(?<codelocation>[\w\-:.\d]+?)\s+?-\s+?%{ANY:logmessage}
+
+# akka log
+AKKATHREADNAME (?:[a-zA-Z0-9._-]+)
+AKKALOG (?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day} %{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second}\.%{MILLSECOND:mills})\s+?\[%{AKKATHREADNAME:threadname}\]\s+?%{LOGLEVEL:loglevel}\s+?(?<codelocation>[\w\-:.\d]+?)\s+?-\s+?\|\[%{ANY:logmessage}\]
+
+# druid log
+DRUIDTHREADNAME (?:[a-zA-Z0-9._-]+)
+DRUIDLOG (?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day} %{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second},%{MILLSECOND:mills})\s+?%{LOGLEVEL:loglevel}\s+?(?<codelocation>[\w\-:.\d]+?)\s+?\[%{DRUIDTHREADNAME:threadname}\]\s+?Event\s+?\[%{ANY:logmessage}\]
+
+DRUIDWALKTHROUGHLOG (?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day} %{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second},%{MILLSECOND:mills}) %{ANY}IndexMerger \[%{ANY:datasource}-%{ANY:any1}\] outDir\[%{ANY:any2}%{YEAR:year1}-%{ANY:any3}%{YEAR:year2}-%{ANY:any4} completed walk through of %{ANY:walkthroughrows} rows in %{ANY:totaltime} millis.
+
+DRUIDQUERYLOG (?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day}T%{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second}.%{MILLSECOND:mills}Z)\s+?%{IP:remotehostname}\s+\{"queryType":"?%{ANY:queryType}","dataSource":\{"type":"table","name":"?%{ANY:datasource}"\},"dimension":?%{ANY:querymessage}"request/time":%{ANY:requesttime},"success":%{ANY:querystatus}
+
+DRUIDUNANNOUNCING (?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day} %{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second},%{MILLSECOND:mills})\s+?%{ANY}Unannouncing segment\[%{ANY:datasource}_%{YEAR:year1}-%{ANY:any1}_%{YEAR:year2}-%{ANY:any2}_%{YEAR:year3}-%{ANY:any3}_%{YEAR:year4}-%{ANY:any4}
+
+# tomcat log
+TOMCATLOG %{IP:remotehostname}\s+?-\s+?-\s+?\[(?<datetime>%{DAYNUM:day}/%{MONTH:month}/%{YEAR:year}:%{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second}\s+?%{UNCATCH_ISO8601_TIMEZONE:timezone})\]\s+?"%{HTTPTYPE:method}\s+?%{ANY:requesturi}\s+?%{HTTPVERSION:version}"\s+?%{HTTPCODE:httpstatuscode}\s+?(?:-|%{HTTPBYTES:bytessent}(?:\s+?%{HTTPTIMETAKEN:timetoken})?)
+
+# gc log
+GCLOG %{ISO8601_TIMESTAMP:timestamp}: %{GC_NUMBER:gcnumber}: \[%{GC_TYPE:gctype} \(%{GC_ERGONOMICS:ergonomics}\) \[%{GC_GEN:young}: %{GC_SIZE:gcyoungbefore}%{GC_SIZE_UNIT:gcyoungbeforeunit}->%{GC_SIZE:gcyoungafter}%{GC_SIZE_UNIT:gcyoungafterunit}\(%{GC_SIZE:gcyoungafter2}%{GC_SIZE_UNIT:gcyoungafter2unit}\)\] \[%{GC_GEN:old}: %{GC_SIZE:gcoldbefore}%{GC_SIZE_UNIT:gcoldbeforeunit}->%{GC_SIZE:gcoldafter}%{GC_SIZE_UNIT:gcoldafterunit}\(%{GC_SIZE:gcoldafter2}%{GC_SIZE_UNIT:gcoldafter2unit}\)\] %{GC_SIZE:gcallbefore}%{GC_SIZE_UNIT:gcallbeforeunit}->%{GC_SIZE:gcallafter}%{GC_SIZE_UNIT:gcallafterunit}\(%{GC_SIZE:gcallafter2}%{GC_SIZE_UNIT:gcallafter2unit}\), \[%{GC_KEY:metaspace}: %{GC_SIZE:gcmetabefore}%{GC_SIZE_UNIT:gcmetabeforeunit}->%{GC_SIZE:gcmetaafter}%{GC_SIZE_UNIT:gcmetaafterunit}\(%{GC_SIZE:gcmetaafter2}%{GC_SIZE_UNIT:gcmetaafter2unit}\)\], %{GC_NUMBER:metatime} %{GC_KEY:metatimeunit}\] \[%{GC_KEY:times}: %{GC_KEY:user}=%{GC_NUMBER:timesuser} %{GC_KEY:sys}=%{GC_NUMBER:timessys}, %{GC_KEY:real}=%{GC_NUMBER:timesreal} %{GC_KEY:timesunit}\]
+
+# young gc log
+YOUNGGC %{ISO8601_TIMESTAMP:timestamp}: %{GC_NUMBER:gcnumber}: \[%{GC_TYPE:gctype} \(%{GC_ERGONOMICS:ergonomics}\)%{ANY}\[%{GC_GEN:young}: %{GC_SIZE:gcyoungbefore}%{GC_SIZE_UNIT:gcyoungbeforeunit}->%{GC_SIZE:gcyoungafter}%{GC_SIZE_UNIT:gcyoungafterunit}\(%{GC_SIZE:gcyoungafter2}%{GC_SIZE_UNIT:gcyoungafter2unit}\)%{ANY}\] %{GC_SIZE:gcallbefore}%{GC_SIZE_UNIT:gcallbeforeunit}->%{GC_SIZE:gcallafter}%{GC_SIZE_UNIT:gcallafterunit}\(%{GC_SIZE:gcallafter2}%{GC_SIZE_UNIT:gcallafter2unit}\), %{GC_NUMBER:metatime} %{GC_KEY:metatimeunit}\] \[%{GC_KEY:times}: %{GC_KEY:user}=%{GC_NUMBER:timesuser} %{GC_KEY:sys}=%{GC_NUMBER:timessys}, %{GC_KEY:real}=%{GC_NUMBER:timesreal} %{GC_KEY:timesunit}\]
+
+# ai consumer
+AICONSUMER (?<timestamp>%{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second}\.%{MILLSECOND:mills}) %{ANY}\bINFO\s+\b(?<dataworker>[\s\S]+)\b\sprocessed\smessages\b (?<value>[\s\S]+)/\s*min\.
+
+#process alive
+PROCESSALIVE_UID (\S*)
+PROCESSALIVE_PID (\s*\d+)
+PROCESSALIVE_PPID (\d+)
+PROCESSALIVE_C (\d+)
+PROCESSALIVE_STIME (\d+:\d+)
+PROCESSALIVE_TIME (\d+:\d+:\d+)
+PROCESSALIVE_TTY ((\?)|tty\d+|(pts/\d+))
+PROCESSALIVE_STAT ((\?|\w)*(\+|<)*)
+PROCESSALIVE_CPUTIME (\d+:\d+)
+PROCESSALIVE_CMD (\S(.*))
+
+
+PROCESSALIVE ^%{PROCESSALIVE_UID:uid}\s*%{PROCESSALIVE_PID:pid}\s*%{PROCESSALIVE_PPID:ppid}\s*%{PROCESSALIVE_C:c}\s*%{PROCESSALIVE_STIME:stime}\s*%{PROCESSALIVE_TTY:tty}\s*%{PROCESSALIVE_TIME:time}\s*%{PROCESSALIVE_CMD:cmd}
+

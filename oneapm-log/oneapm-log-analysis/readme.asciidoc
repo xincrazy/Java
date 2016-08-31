@@ -1,0 +1,197 @@
+= Log Analysis
+
+== Elasticsearch
+
+=== Cassandra Index Template
+
+[source,shell,numbered]
+-------------
+PUT es3:9200/_template/cassandra_template?pretty
+-------------
+
+[source,shell,numbered]
+-------------
+{
+    "order": 0,
+    "template": "cassandra-*",
+    "settings": {
+        "index": {
+            "number_of_shards": 1,
+            "number_of_replicas": 0,
+            "detect_noop": true
+        }
+    },
+    "mappings": {
+        "logs": {
+            "_source": {
+                "enabled": true
+            },
+            "_timestamp": {
+                "enabled": true,
+                "format": "yyyy-MM-dd HH:mm:ss,SSS||epoch_millis||strictDateOptionalTime",
+                "ignore_missing": true
+            },
+            "_all": {
+                "enabled": false
+            },
+            "_ttl": {
+                "enabled": true
+            },
+            "properties": {
+                "host_ip": {
+                    "type": "ip",
+                    "doc_values": true,
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true
+                },
+                "log_level": {
+                    "type": "string",
+                    "doc_values": true,
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "null_value": "INFO",
+                    "store": true
+                },
+                "timestamp": {
+                    "include_in_all": false,
+                    "format": "yyyy-MM-dd HH:mm:ss,SSS||epoch_millis||strict_date_optional_time",
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "date",
+                    "doc_values": true
+                },
+                "log_content": {
+                    "include_in_all": false,
+                    "term_vector": "with_positions_offsets",
+                    "similarity": "default",
+                    "index_options": "positions",
+                    "fielddata": {
+                        "format": "paged_bytes",
+                        "loading": "eager"
+                    },
+                    "index": "analyzed",
+                    "store": false,
+                    "type": "string",
+                    "doc_values": false
+                }
+            }
+        }
+    },
+    "aliases": {}
+}
+-------------
+
+=== Akka Index Template
+
+[source,shell,numbered]
+-------------
+PUT es3:9200/_template/akka_template?pretty
+-------------
+
+[source,shell,numbered]
+-------------
+{
+    "order": 0,
+    "template": "akka-*",
+    "settings": {
+        "index": {
+            "number_of_shards": 1,
+            "number_of_replicas": 0,
+            "detect_noop": true
+        }
+    },
+    "mappings": {
+        "logs": {
+            "_source": {
+                "enabled": true
+            },
+            "_timestamp": {
+                "enabled": true,
+                "format": "yyyy-MM-dd HH:mm:ss.SSS||epoch_millis||strictDateOptionalTime",
+                "ignore_missing": true
+            },
+            "_all": {
+                "enabled": false
+            },
+            "_ttl": {
+                "enabled": true
+            },
+            "properties": {
+                "host_ip": {
+                    "type": "ip",
+                    "doc_values": true,
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true
+                },
+                "log_level": {
+                    "type": "string",
+                    "doc_values": true,
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "null_value": "INFO",
+                    "store": true
+                },
+                "timestamp": {
+                    "include_in_all": false,
+                    "format": "yyyy-MM-dd HH:mm:ss.SSS||epoch_millis||strict_date_optional_time",
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "date",
+                    "doc_values": true
+                },
+                "log_content": {
+                    "include_in_all": false,
+                    "term_vector": "with_positions_offsets",
+                    "similarity": "default",
+                    "index_options": "positions",
+                    "fielddata": {
+                        "format": "paged_bytes",
+                        "loading": "eager"
+                    },
+                    "index": "analyzed",
+                    "store": false,
+                    "type": "string",
+                    "doc_values": false
+                }
+            }
+        }
+    },
+    "aliases": {}
+}
+-------------
+
+== Grok格式
+
+* 注意格式为了容易理解，填充了大量空白字符，实际不应该有
+[source,shell,numbered]
+-------------
+%\{
+    (?<name>
+            (?<pattern>
+                        [A-z0-9]+
+            )
+            (?:
+               :(?<subname>
+                            [A-z0-9_:;\/\s\.]+
+                )
+            )?
+    )
+    (?:
+       =(?<definition>
+                        (?:
+                            (?:
+                                [^{}]+|\.+
+                            )+
+                        )+
+        )
+    )?
+\}
+-------------
+
+=== Grok Pattern
+
+* 位置
+
+`src/main/resources/grok/patterns/log.grok`

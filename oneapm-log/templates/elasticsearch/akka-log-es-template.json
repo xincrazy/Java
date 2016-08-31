@@ -1,0 +1,76 @@
+{
+    "order": 0,
+    "template": "akka_log_*",
+    "settings": {
+        "index": {
+            "number_of_shards": "1",
+            "number_of_replicas": "0"
+        }
+    },
+    "mappings": {
+        "logs": {
+            "_source": {
+                "enabled": true
+            },
+            "_timestamp": {
+                "enabled": true
+            },
+            "_all": {
+                "enabled": false
+            },
+            "properties": {
+                "hostname": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "kafka/consume/speed": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "long",
+                    "doc_values": true
+                },
+                "event/commit/speed": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "long",
+                    "doc_values": true
+                },
+                "event/failurebatch/speed": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "long",
+                    "doc_values": true
+                },
+                "event/commitbatch/speed": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "long",
+                    "doc_values": true
+                },
+                "event/successbatch/speed": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "long",
+                    "doc_values": true
+                },
+                "timestamp": {
+                    "include_in_all": false,
+                    "format": "epoch_millis||strict_date_optional_time||yyy-MM-dd HH:mm:ss||yyyy-MM-dd",
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "date",
+                    "doc_values": true
+                }
+            }
+        }
+    },
+    "aliases": {}
+}

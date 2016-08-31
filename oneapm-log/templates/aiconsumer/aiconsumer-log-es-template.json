@@ -1,0 +1,90 @@
+{
+  "order": 0,
+  "template": "druid_metric-*",
+  "settings": {
+    "index": {
+      "number_of_shards": "1",
+      "number_of_replicas": "0"
+    }
+  },
+  "mappings": {
+    "druid": {
+      "_source": {
+        "enabled": true
+      },
+      "_timestamp": {
+        "enabled": true
+      },
+      "_all": {
+        "enabled": false
+      },
+      "properties": {
+        "hostname": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "string",
+          "doc_values": true
+        },
+        "metric-data-worker": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "string",
+          "doc_values": true
+        },
+        "trace-data-worker": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "string",
+          "doc_values": true
+        },
+        "alert-metric-data-worker": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "string",
+          "doc_values": true
+        },
+        "dist-data-worker": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "string",
+          "doc_values": true
+        },
+        "record-data-worker": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "string",
+          "doc_values": true
+        },
+        "metric-signal-worker": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "string",
+          "doc_values": true
+        },
+        "alert-event-data-worker": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "string",
+          "doc_values": true
+        },
+        "timestamp": {
+          "include_in_all": false,
+          "format": "epoch_millis||strict_date_optional_time||yyy-MM-dd HH:mm:ss||yyyy-MM-dd",
+          "index": "not_analyzed",
+          "store": true,
+          "type": "date",
+          "doc_values": true
+        }
+      }
+    }
+  },
+  "aliases": {}
+}

@@ -1,0 +1,89 @@
+{
+    "order": 0,
+    "template": "raw_log_*",
+    "settings": {
+        "index": {
+            "number_of_shards": "1",
+            "number_of_replicas": "0"
+        }
+    },
+    "mappings": {
+        "raw_log": {
+            "_source": {
+                "enabled": true
+            },
+            "_timestamp": {
+                "enabled": true
+            },
+            "_all": {
+                "enabled": false
+            },
+            "properties": {
+                "hostname": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "level": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "message": {
+                    "include_in_all": false,
+                    "index": "analyzed",
+                    "store": true,
+                    "type": "string"
+                },
+                "type": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "subType1": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "subType2": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "subType3": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "logFilePath": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "timestamp": {
+                    "include_in_all": false,
+                    "format": "epoch_millis||strict_date_optional_time||yyy-MM-dd HH:mm:ss||yyyy-MM-dd",
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "date",
+                    "doc_values": true
+                }
+            }
+        }
+    },
+    "aliases": {}
+}

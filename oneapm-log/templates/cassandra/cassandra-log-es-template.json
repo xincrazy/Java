@@ -1,0 +1,111 @@
+{
+  "order": 0,
+  "template": "cassandra_metric-*",
+  "settings": {
+    "index": {
+      "number_of_shards": "1",
+      "number_of_replicas": "0"
+    }
+  },
+  "mappings": {
+    "cassandra": {
+      "_source": {
+        "enabled": true
+      },
+      "_timestamp": {
+        "enabled": true
+      },
+      "_all": {
+        "enabled": false
+      },
+      "properties": {
+        "hostname": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "string",
+          "doc_values": true
+        },
+        "CR_R_Latency_1min": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "CR_W_Latency_1min": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "DiskSpaceUsed": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "DiskSpaceUsedRate": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "CR_R_Unavailables_1min": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "CR_W_Unavailables_1min": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "Compaction_Completed_1min": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "Compaction_Pending_1min": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "CR_R_Timeouts_1min": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "CR_W_Timeouts_1min": {
+          "include_in_all": false,
+          "index": "not_analyzed",
+          "store": true,
+          "type": "double",
+          "doc_values": true
+        },
+        "timestamp": {
+          "include_in_all": false,
+          "format": "epoch_millis||strict_date_optional_time||yyy-MM-dd HH:mm:ss||yyyy-MM-dd",
+          "index": "not_analyzed",
+          "store": true,
+          "type": "date",
+          "doc_values": true
+        }
+      }
+    }
+  },
+  "aliases": {}
+}

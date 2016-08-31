@@ -1,0 +1,50 @@
+# common
+ANY (?:[\s\S]*)
+
+# basic
+LOGLEVEL ([A|a]lert|ALERT|[T|t]race|TRACE|[D|d]ebug|DEBUG|[N|n]otice|NOTICE|[I|i]nfo|INFO|[W|w]arn?(?:ing)?|WARN?(?:ING)?|[E|e]rr?(?:or)?|ERR?(?:OR)?|[C|c]rit?(?:ical)?|CRIT?(?:ICAL)?|[F|f]atal|FATAL|[S|s]evere|SEVERE|EMERG(?:ENCY)?|[Ee]merg(?:ency)?)
+YEAR (?>\d\d){1,2}
+MONTH \b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b
+MONTHNUM (?:0?[1-9]|1[0-2])
+DAY (?:Mon(?:day)?|Tue(?:sday)?|Wed(?:nesday)?|Thu(?:rsday)?|Fri(?:day)?|Sat(?:urday)?|Sun(?:day)?)
+DAYNUM (?:0?[1-9]|[1-2][0-9]|3[0-1])
+HOUR (?:2[0123]|[01]?[0-9])
+MINUTE (?:[0-5]?[0-9])
+SECOND (?:[0-5]?[0-9])
+MILLSECOND (?:[0-9]{1,3})
+ISO8601_TIMEZONE (?:Z|[+-]%{HOUR}(?::?%{MINUTE}))
+
+# cassandra log
+CASSANDRATHREADNAME (?:[a-zA-Z0-9._-]+)
+CASSANDRALOG %{LOGLEVEL:loglevel}\s+?\[%{CASSANDRATHREADNAME:threadname}\]\s+?(?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day} %{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second},%{MILLSECOND:mills})\s+?(?<codelocation>[\w\-:.\d]+?)\s+?-\s+?%{ANY:logmessage}
+
+# akka log
+AKKATHREADNAME (?:[a-zA-Z0-9._-]+)
+AKKALOG (?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day} %{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second}\.%{MILLSECOND:mills})\s+?\[%{AKKATHREADNAME:threadname}\]\s+?%{LOGLEVEL:loglevel}\s+?(?<codelocation>[\w\-:.\d]+?)\s+?-\s+?\|\[%{ANY:logmessage}\]
+
+# druid log
+DRUIDTHREADNAME (?:[a-zA-Z0-9._-]+)
+DRUIDLOG (?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day} %{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second},%{MILLSECOND:mills})\s+?%{LOGLEVEL:loglevel}\s+?(?<codelocation>[\w\-:.\d]+?)\s+?\[%{DRUIDTHREADNAME:threadname}\]\s+?Event\s+?\[%{ANY:logmessage}\]
+
+DRUIDQUERYLOG (?<timestamp>%{YEAR:year}-%{MONTHNUM:month}-%{DAYNUM:day}T%{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second}.%{MILLSECOND:mills}Z)\s+?%{IP:remotehostname}\s+?%{ANY:querymessage}"request/time":%{ANY:requesttime},"success":%{ANY:querystatus}
+
+# tomcat log
+TOMCATLOG %{IP:remotehostname}\s+?-\s+?-\s+?\[(?<datetime>%{DAYNUM:day}/%{MONTH:month}/%{YEAR:year}:%{HOUR:hour}:%{MINUTE:minute}:%{SECOND:second}\s+?%{UNCATCH_ISO8601_TIMEZONE:timezone})\]\s+?"%{HTTPTYPE:method}\s+?%{ANY:requesturi}\s+?%{HTTPVERSION:version}"\s+?%{HTTPCODE:httpstatuscode}\s+?(?:-|%{HTTPBYTES:bytessent}(?:\s+?%{HTTPTIMETAKEN:timetoken})?)
+
+#process alive
+PROCESSALIVE_UID (\S*)
+PROCESSALIVE_PID (\s*\d+)
+PROCESSALIVE_PPID (\d+)
+PROCESSALIVE_C (\d+)
+PROCESSALIVE_STIME (\d+:\d+)
+PROCESSALIVE_TIME (\d+:\d+:\d+)
+PROCESSALIVE_TTY ((\?)|tty\d+|(pts/\d+))
+PROCESSALIVE_STAT ((\?|\w)*(\+|<)*)
+PROCESSALIVE_CPUTIME (\d+:\d+)
+PROCESSALIVE_CMD (\S(.*))
+
+
+PROCESSALIVE ^%{PROCESSALIVE_UID:uid}\s*%{PROCESSALIVE_PID:pid}\s*%{PROCESSALIVE_PPID:ppid}\s*%{PROCESSALIVE_C:c}\s*%{PROCESSALIVE_STIME:stime}\s*%{PROCESSALIVE_TTY:tty}\s*%{PROCESSALIVE_TIME:time}\s*%{PROCESSALIVE_CMD:cmd}
+
+
+

@@ -1,0 +1,77 @@
+{
+    "order": 0,
+    "template": "monitor-*",
+    "settings": {
+        "index": {
+            "number_of_shards": "10",
+            "number_of_replicas": "1"
+        }
+    },
+    "mappings": {
+        "monitor": {
+            "_source": {
+                "enabled": true
+            },
+            "_timestamp": {
+                "enabled": true
+            },
+            "_all": {
+                "enabled": false
+            },
+            "properties": {
+                "timestamp": {
+                    "include_in_all": false,
+                    "format": "epoch_millis||strict_date_optional_time",
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "date",
+                    "doc_values": true
+                },
+                "hostname": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "servicename": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "servicetype": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "servicesubtype": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "metricname": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "string",
+                    "doc_values": true
+                },
+                "metricdata": {
+                    "include_in_all": false,
+                    "index": "not_analyzed",
+                    "store": true,
+                    "type": "double",
+                    "doc_values": true
+                }
+            }
+        }
+    },
+    "aliases": {
+    }
+}
